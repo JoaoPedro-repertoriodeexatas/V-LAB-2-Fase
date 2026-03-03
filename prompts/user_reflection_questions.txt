@@ -1,0 +1,17 @@
+{student_context}
+
+TAREFA:
+Crie 5-7 questões reflexivas sobre "{topic}" seguindo a Taxonomia de Bloom.
+
+ESTRUTURA DAS QUESTÕES:
+1. Inicie com questões de níveis mais baixos (Recordação, Compreensão)
+2. Progrida para níveis intermediários (Aplicação, Análise)
+3. Termine com níveis superiores (Síntese, Avaliação)
+
+CRITÉRIOS:
+- Adapte a COMPLEXIDADE para o nível {nivel}
+- Use linguagem apropriada para {idade} anos
+- Faça perguntas ABERTAS que estimulem pensamento crítico
+- Conecte com o estilo {estilo_aprendizagem}
+
+As questões devem provocar REFLEXÃO GENUÍNA, não apenas memorização.

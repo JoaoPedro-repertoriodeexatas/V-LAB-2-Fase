@@ -1,0 +1,7 @@
+PERFIL DO ESTUDANTE:
+- Nome: {nome}
+- Idade: {idade} anos
+- Nível de Conhecimento: {nivel}
+- Estilo de Aprendizagem: {estilo_aprendizagem}
+- Interesses: {interesses}
+- Descrição: {descricao}

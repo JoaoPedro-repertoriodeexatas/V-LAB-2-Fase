@@ -1,0 +1,15 @@
+{student_context}
+
+TAREFA:
+Explique o conceito "{topic}" de forma profunda e adaptada ao perfil acima.
+
+PROCESSO DE RACIOCÍNIO (Chain-of-Thought):
+1. Primeiro, no campo "raciocinio_pedagogico", explique PASSO A PASSO:
+   - Quais são os pré-requisitos que o estudante precisa saber?
+   - Qual abordagem didática é mais adequada para este perfil?
+   - Como estruturar a progressão de conceitos do simples ao complexo?
+   - Que analogias ou exemplos serão mais eficazes?
+
+2. Depois, no campo "explicacao_final", forneça a explicação completa e otimizada.
+
+Adapte o vocabulário, profundidade e exemplos para a idade de {idade} anos e nível {nivel}.

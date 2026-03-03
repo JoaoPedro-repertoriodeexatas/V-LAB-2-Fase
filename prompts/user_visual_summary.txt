@@ -1,0 +1,24 @@
+{student_context}
+
+TAREFA:
+Crie um MAPA MENTAL VISUAL do conceito "{topic}" usando caracteres ASCII e Markdown.
+
+REQUISITOS DO MAPA MENTAL:
+1. Coloque o CONCEITO CENTRAL no meio/topo
+2. Crie RAMIFICAÇÕES para sub-conceitos principais (use ├──, └──, │)
+3. Adicione DETALHES em cada ramificação
+4. Use INDENTAÇÃO e símbolos para hierarquia visual
+5. Inclua CORES através de emojis temáticos (🔴 importante, ⚡ conceito-chave, etc.)
+
+EXEMPLO DE ESTRUTURA:
+```
+                [CONCEITO CENTRAL]
+                        |
+        ┌───────────────┼───────────────┐
+        │               │               │
+    Sub-conceito1   Sub-conceito2   Sub-conceito3
+        │               │               │
+      Detalhe         Detalhe         Detalhe
+```
+
+Adapte a COMPLEXIDADE VISUAL para o nível {nivel} e estilo {estilo_aprendizagem}.
