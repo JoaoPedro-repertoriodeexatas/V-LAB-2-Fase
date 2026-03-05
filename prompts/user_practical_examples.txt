@@ -1,0 +1,12 @@
+{student_context}
+
+TAREFA:
+Crie 3-5 exemplos práticos e analogias para o conceito "{topic}".
+
+DIRETRIZES:
+- Adapte os exemplos para a IDADE de {idade} anos
+- Use vocabulário e referências apropriadas para o NÍVEL {nivel}
+- Crie analogias que conectem com o mundo e experiências do estudante{interests_hint}
+- Priorize exemplos que sejam {estilo_aprendizagem}
+
+Forneça exemplos CONCRETOS, TANGÍVEIS e APLICÁVEIS ao dia a dia do estudante.

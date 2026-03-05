@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma Educativa com IA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg shadow-lg p-8 mb-8 text-white">
+            <h1 class="text-4xl font-bold mb-2">Plataforma Educativa com IA</h1>
+            <p class="text-blue-100">Sistema inteligente de geracao de conteudo educacional personalizado</p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md mb-8">
+            <div class="flex border-b">
+                <button onclick="showTab('generate')" id="tab-generate" class="tab-btn px-6 py-4 font-semibold text-blue-600 border-b-2 border-blue-600">
+                    Gerar Material
+                </button>
+                <button onclick="showTab('students')" id="tab-students" class="tab-btn px-6 py-4 font-semibold text-gray-500 hover:text-blue-600">
+                    Gerenciar Estudantes
+                </button>
+                <button onclick="showTab('history')" id="tab-history" class="tab-btn px-6 py-4 font-semibold text-gray-500 hover:text-blue-600">
+                    Historico
+                </button>
+            </div>
+        </div>
+
+        <div id="content-generate" class="tab-content active">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h2 class="text-2xl font-bold mb-6 text-gray-800">Configuracao</h2>
+                        
+                        <form id="generateForm" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Estudante</label>
+                                <select id="studentSelect" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="">Carregando...</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Topico Educacional</label>
+                                <input type="text" id="topicInput" required 
+                                    placeholder="Ex: Fotossintese, Sistema Solar, Fracoes..."
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+
+                            <button type="submit" id="generateBtn" 
+                                class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition duration-200">
+                                <span id="generateBtnText">Gerar Material Educativo</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2">
+                    <div id="resultsContainer" class="hidden space-y-6"></div>
+                    <div id="emptyState" class="bg-white rounded-lg shadow-md p-12 text-center">
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2">Pronto para comecar!</h3>
+                        <p class="text-gray-500">Selecione um estudante e digite um topico.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="content-students" class="tab-content">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h2 class="text-2xl font-bold mb-6 text-gray-800">Adicionar Estudante</h2>
+                        
+                        <form id="studentForm" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Nome Completo *</label>
+                                <input type="text" id="studentName" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Idade *</label>
+                                <input type="number" id="studentAge" required min="1" max="120"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Nivel *</label>
+                                <select id="studentLevel" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                    <option value="">Selecione...</option>
+                                    <option value="Iniciante">Iniciante</option>
+                                    <option value="Intermediario">Intermediario</option>
+                                    <option value="Avancado">Avancado</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Estilo de Aprendizagem *</label>
+                                <select id="studentStyle" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                    <option value="">Selecione...</option>
+                                    <option value="Visual">Visual</option>
+                                    <option value="Auditivo">Auditivo</option>
+                                    <option value="Cinestesico">Cinestesico</option>
+                                    <option value="Leitura/Escrita">Leitura/Escrita</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Interesses (separados por virgula) *</label>
+                                <input type="text" id="studentInterests" required
+                                    placeholder="Ex: programacao, musica, esportes"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Descricao (opcional)</label>
+                                <textarea id="studentDescription" rows="3"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
+                            </div>
+
+                            <button type="submit" 
+                                class="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition duration-200">
+                                Cadastrar Estudante
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h2 class="text-2xl font-bold mb-6 text-gray-800">Lista de Estudantes</h2>
+                        <div id="studentsList">
+                            <p class="text-gray-500 text-center py-8">Carregando estudantes...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="content-history" class="tab-content">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold mb-6 text-gray-800">Historico de Geracoes</h2>
+                <div id="historyList">
+                    <p class="text-gray-500 text-center py-8">Carregando historico...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let students = [];
+
+        function showTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');
+                el.classList.add('text-gray-500');
+            });
+            
+            document.getElementById(`content-${tab}`).classList.add('active');
+            document.getElementById(`tab-${tab}`).classList.remove('text-gray-500');
+            document.getElementById(`tab-${tab}`).classList.add('text-blue-600', 'border-b-2', 'border-blue-600');
+
+            if (tab === 'students') loadStudents();
+            if (tab === 'history') loadHistory();
+        }
+
+        async function loadStudents() {
+            try {
+                const response = await fetch('/api/students');
+                const data = await response.json();
+                
+                if (data.success) {
+                    students = data.students;
+                    updateStudentSelect();
+                    renderStudentsList();
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+            }
+        }
+
+        function updateStudentSelect() {
+            const select = document.getElementById('studentSelect');
+            if (students.length === 0) {
+                select.innerHTML = '<option value="">Nenhum estudante cadastrado</option>';
+            } else {
+                select.innerHTML = '<option value="">Selecione um estudante...</option>' +
+                    students.map(s => `<option value="${s.id}">${s.nome} - ${s.idade} anos (${s.nivel})</option>`).join('');
+            }
+        }
+
+        function renderStudentsList() {
+            const container = document.getElementById('studentsList');
+            
+            if (students.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center py-8">Nenhum estudante cadastrado.</p>';
+                return;
+            }
+
+            container.innerHTML = students.map(student => `
+                <div class="border border-gray-200 rounded-lg p-4 mb-4">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold text-gray-800">${student.nome}</h3>
+                            <div class="mt-2 space-y-1 text-sm text-gray-600">
+                                <p><strong>Idade:</strong> ${student.idade} anos</p>
+                                <p><strong>Nivel:</strong> ${student.nivel}</p>
+                                <p><strong>Estilo:</strong> ${student.estilo_aprendizagem}</p>
+                                <p><strong>Interesses:</strong> ${student.interesses.join(', ')}</p>
+                            </div>
+                        </div>
+                        <button onclick="deleteStudent(${student.id}, '${student.nome}')" 
+                            class="ml-4 text-red-600 hover:text-red-800 font-semibold">
+                            Remover
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('studentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const interestsStr = document.getElementById('studentInterests').value;
+            const interests = interestsStr.split(',').map(i => i.trim()).filter(i => i);
+
+            const studentData = {
+                nome: document.getElementById('studentName').value,
+                idade: parseInt(document.getElementById('studentAge').value),
+                nivel: document.getElementById('studentLevel').value,
+                estilo_aprendizagem: document.getElementById('studentStyle').value,
+                interesses: interests,
+                descricao: document.getElementById('studentDescription').value
+            };
+
+            try {
+                const response = await fetch('/api/students', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(studentData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Estudante cadastrado com sucesso!');
+                    document.getElementById('studentForm').reset();
+                    await loadStudents();
+                } else {
+                    alert(data.error || 'Erro ao cadastrar estudante');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro ao cadastrar estudante');
+            }
+        });
+
+        async function deleteStudent(id, nome) {
+            if (!confirm(`Remover o estudante "${nome}"?`)) return;
+
+            try {
+                const response = await fetch(`/api/students/${id}`, { method: 'DELETE' });
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Estudante removido');
+                    await loadStudents();
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+            }
+        }
+
+        document.getElementById('generateForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const topic = document.getElementById('topicInput').value;
+            const studentId = document.getElementById('studentSelect').value;
+
+            if (!studentId) {
+                alert('Selecione um estudante');
+                return;
+            }
+
+            const btn = document.getElementById('generateBtn');
+            btn.disabled = true;
+            btn.textContent = 'Gerando...';
+
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ topic, student_id: parseInt(studentId) })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('emptyState').classList.add('hidden');
+                    const container = document.getElementById('resultsContainer');
+                    container.classList.remove('hidden');
+
+                    // Armazena o ultimo resultado para permitir download
+                    window.lastGeneration = {
+                        topic,
+                        studentId: parseInt(studentId),
+                        results: data.results
+                    };
+
+                    container.innerHTML = `
+                        <div class="flex justify-end mb-4">
+                            <button onclick="downloadLastGeneration()" 
+                                class="bg-green-600 text-white py-2 px-4 rounded-lg text-sm font-semibold hover:bg-green-700">
+                                Baixar material (.json)
+                            </button>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="bg-white rounded-lg shadow-md p-6">
+                                <h3 class="text-xl font-bold mb-4">Explicacao Conceitual</h3>
+                                <pre class="whitespace-pre-wrap text-sm bg-gray-50 p-4 rounded">${JSON.stringify(data.results.explicacao_conceitual.content, null, 2)}</pre>
+                            </div>
+                            <div class="bg-white rounded-lg shadow-md p-6">
+                                <h3 class="text-xl font-bold mb-4">Exemplos Praticos</h3>
+                                <pre class="whitespace-pre-wrap text-sm bg-gray-50 p-4 rounded">${JSON.stringify(data.results.exemplos_praticos.content, null, 2)}</pre>
+                            </div>
+                            <div class="bg-white rounded-lg shadow-md p-6">
+                                <h3 class="text-xl font-bold mb-4">Questoes Reflexivas</h3>
+                                <pre class="whitespace-pre-wrap text-sm bg-gray-50 p-4 rounded">${JSON.stringify(data.results.questoes_reflexivas.content, null, 2)}</pre>
+                            </div>
+                            <div class="bg-white rounded-lg shadow-md p-6">
+                                <h3 class="text-xl font-bold mb-4">Resumo Visual</h3>
+                                <pre class="whitespace-pre-wrap text-sm bg-gray-50 p-4 rounded">${JSON.stringify(data.results.resumo_visual.content, null, 2)}</pre>
+                            </div>
+                        </div>
+                    `;
+
+                    // Atualiza o historico para refletir a nova geracao
+                    loadHistory();
+
+                    alert('Material gerado!');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro ao gerar material');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Gerar Material Educativo';
+            }
+        });
+
+        function downloadLastGeneration() {
+            if (!window.lastGeneration) {
+                alert('Nenhum material gerado para download.');
+                return;
+            }
+
+            const payload = {
+                topic: window.lastGeneration.topic,
+                student_id: window.lastGeneration.studentId,
+                generated_at: new Date().toISOString(),
+                results: window.lastGeneration.results
+            };
+
+            const blob = new Blob(
+                [JSON.stringify(payload, null, 2)],
+                { type: 'application/json;charset=utf-8' }
+            );
+
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `material_${window.lastGeneration.studentId}_${Date.now()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        async function loadHistory() {
+            try {
+                const response = await fetch('/api/history?limit=20');
+                const data = await response.json();
+
+                if (data.success) {
+                    const container = document.getElementById('historyList');
+                    if (data.history.length === 0) {
+                        container.innerHTML = '<p class="text-gray-500 text-center py-8">Nenhuma geracao no historico.</p>';
+                    } else {
+                        container.innerHTML = data.history.map(item => `
+                            <div class="border border-gray-200 rounded-lg p-4 mb-4">
+                                <h3 class="font-semibold">${item.topic}</h3>
+                                <p class="text-sm text-gray-600">Estudante: ${item.student_name}</p>
+                                <p class="text-sm text-gray-500">Tipo: ${item.prompt_type} | Tokens: ${item.tokens_used || 'N/A'}</p>
+                                <p class="text-xs text-gray-400">${new Date(item.created_at).toLocaleString('pt-BR')}</p>
+                            </div>
+                        `).join('');
+                    }
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+            }
+        }
+
+        loadStudents();
+    </script>
+</body>
+</html>
