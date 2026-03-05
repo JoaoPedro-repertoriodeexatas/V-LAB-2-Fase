@@ -307,16 +307,44 @@
                     document.getElementById('emptyState').classList.add('hidden');
                     const container = document.getElementById('resultsContainer');
                     container.classList.remove('hidden');
+
+                    // Armazena o ultimo resultado para permitir download
+                    window.lastGeneration = {
+                        topic,
+                        studentId: parseInt(studentId),
+                        results: data.results
+                    };
+
                     container.innerHTML = `
-                        <div class="bg-white rounded-lg shadow-md p-6">
-                            <h3 class="text-xl font-bold mb-4">Explicacao Conceitual</h3>
-                            <pre class="whitespace-pre-wrap">${JSON.stringify(data.results.explicacao_conceitual.content, null, 2)}</pre>
+                        <div class="flex justify-end mb-4">
+                            <button onclick="downloadLastGeneration()" 
+                                class="bg-green-600 text-white py-2 px-4 rounded-lg text-sm font-semibold hover:bg-green-700">
+                                Baixar material (.json)
+                            </button>
                         </div>
-                        <div class="bg-white rounded-lg shadow-md p-6">
-                            <h3 class="text-xl font-bold mb-4">Exemplos Praticos</h3>
-                            <pre class="whitespace-pre-wrap">${JSON.stringify(data.results.exemplos_praticos.content, null, 2)}</pre>
+                        <div class="space-y-6">
+                            <div class="bg-white rounded-lg shadow-md p-6">
+                                <h3 class="text-xl font-bold mb-4">Explicacao Conceitual</h3>
+                                <pre class="whitespace-pre-wrap text-sm bg-gray-50 p-4 rounded">${JSON.stringify(data.results.explicacao_conceitual.content, null, 2)}</pre>
+                            </div>
+                            <div class="bg-white rounded-lg shadow-md p-6">
+                                <h3 class="text-xl font-bold mb-4">Exemplos Praticos</h3>
+                                <pre class="whitespace-pre-wrap text-sm bg-gray-50 p-4 rounded">${JSON.stringify(data.results.exemplos_praticos.content, null, 2)}</pre>
+                            </div>
+                            <div class="bg-white rounded-lg shadow-md p-6">
+                                <h3 class="text-xl font-bold mb-4">Questoes Reflexivas</h3>
+                                <pre class="whitespace-pre-wrap text-sm bg-gray-50 p-4 rounded">${JSON.stringify(data.results.questoes_reflexivas.content, null, 2)}</pre>
+                            </div>
+                            <div class="bg-white rounded-lg shadow-md p-6">
+                                <h3 class="text-xl font-bold mb-4">Resumo Visual</h3>
+                                <pre class="whitespace-pre-wrap text-sm bg-gray-50 p-4 rounded">${JSON.stringify(data.results.resumo_visual.content, null, 2)}</pre>
+                            </div>
                         </div>
                     `;
+
+                    // Atualiza o historico para refletir a nova geracao
+                    loadHistory();
+
                     alert('Material gerado!');
                 }
             } catch (error) {
@@ -327,6 +355,34 @@
                 btn.textContent = 'Gerar Material Educativo';
             }
         });
+
+        function downloadLastGeneration() {
+            if (!window.lastGeneration) {
+                alert('Nenhum material gerado para download.');
+                return;
+            }
+
+            const payload = {
+                topic: window.lastGeneration.topic,
+                student_id: window.lastGeneration.studentId,
+                generated_at: new Date().toISOString(),
+                results: window.lastGeneration.results
+            };
+
+            const blob = new Blob(
+                [JSON.stringify(payload, null, 2)],
+                { type: 'application/json;charset=utf-8' }
+            );
+
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `material_${window.lastGeneration.studentId}_${Date.now()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
 
         async function loadHistory() {
             try {

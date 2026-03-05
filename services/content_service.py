@@ -62,7 +62,7 @@ class ContentService:
         student: Any,
         student_profile: Dict[str, Any]
     ) -> Dict[str, Any]:
-        """Gera conteudo e salva no historico."""
+        """Gera conteudo, salva no historico e propaga erros relevantes."""
         builders = {
             'conceptual': self.prompt_engine.build_conceptual_explanation_prompt,
             'practical': self.prompt_engine.build_practical_examples_prompt,
@@ -70,9 +70,11 @@ class ContentService:
             'visual': self.prompt_engine.build_visual_summary_prompt
         }
 
+        # Construcao de prompt e chamada ao LLM
         prompt = builders[prompt_type](topic, student_profile)
         response = self.llm_service.generate_content(prompt['messages'])
 
+        # Persistencia no historico
         try:
             history = GenerationHistory(
                 student_id=student.id,
@@ -85,7 +87,16 @@ class ContentService:
             )
             db.session.add(history)
             db.session.commit()
+            logger.info(
+                "Historico salvo com sucesso - id=%s, estudante_id=%s, tipo=%s, topico=%s",
+                history.id,
+                history.student_id,
+                history.prompt_type,
+                history.topic,
+            )
         except Exception as e:
-            logger.error(f"Erro ao salvar historico: {e}")
+            db.session.rollback()
+            logger.error("Erro ao salvar historico de geracao", exc_info=True)
+            raise RuntimeError(f"Erro ao salvar historico de geracao: {e}")
 
         return response

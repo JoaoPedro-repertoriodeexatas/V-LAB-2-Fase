@@ -49,7 +49,7 @@ def create_app():
     # Inicializa servicos
     prompt_engine = PromptEngine(str(config.PROMPTS_DIR))
     llm_service = LLMService(
-        api_key=config.OPENROUTER_API_KEY,
+        api_key=config.GEMINI_API_KEY,
         model_name=config.MODEL_NAME,
         temperature=config.MODEL_TEMPERATURE,
         max_tokens=config.MODEL_MAX_TOKENS,

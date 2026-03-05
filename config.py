@@ -14,11 +14,11 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent
 PROMPTS_DIR = BASE_DIR / "prompts"
 
-# OpenRouter API
-OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY', '')
+# Gemini API
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-# Model Configuration
-MODEL_NAME = os.getenv('MODEL_NAME', 'openai/gpt-4o-mini')
+# Model Configuration (Atualizado para o Gemini como fallback)
+MODEL_NAME = os.getenv("MODEL_NAME", "gemini-1.5-flash").strip()
 MODEL_TEMPERATURE = float(os.getenv('MODEL_TEMPERATURE', '0.7'))
 MODEL_MAX_TOKENS = int(os.getenv('MODEL_MAX_TOKENS', '2000'))
 MODEL_TOP_P = float(os.getenv('MODEL_TOP_P', '1.0'))
@@ -43,9 +43,10 @@ LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO').upper()
 
 def validate_config():
     """Valida configuracoes obrigatorias."""
-    if not OPENROUTER_API_KEY or OPENROUTER_API_KEY == 'your_openrouter_api_key_here':
+    # Alterado para validar a chave do Gemini
+    if not GEMINI_API_KEY or GEMINI_API_KEY == 'sua_chave_gemini_aqui':
         raise RuntimeError(
-            "ERRO: OPENROUTER_API_KEY nao configurada. "
+            "ERRO: GEMINI_API_KEY nao configurada. "
             "Configure a chave de API no arquivo .env"
         )
     
